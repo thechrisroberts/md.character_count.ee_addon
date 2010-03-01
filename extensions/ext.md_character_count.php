@@ -449,12 +449,12 @@ class Md_character_count
       }
     }
     // add the posted values to the settings
-    $this->$settings[$PREFS->ini('site_id')] = $_POST;
+    $this->settings[$PREFS->ini('site_id')] = $_POST;
 
     // update the settings
     $query = $DB->query($sql = 
       "UPDATE exp_extensions 
-       SET settings = '" . addslashes(serialize($this->$settings)) . "' WHERE class = '" . MD_CC_extension_class . "'"
+       SET settings = '" . addslashes(serialize($this->settings)) . "' WHERE class = '" . MD_CC_extension_class . "'"
       );
   }
 
