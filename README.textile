@@ -8,15 +8,19 @@ Developed by Ryan Masuga, http://masugadesign.com
 
 Inspired by Andrew Weaver's Character Count extension.
 
-Docs: "MD Character Count":http://www.masugadesign.com/the-lab/scripts/md-character-count/ <br />
+Docs: "MD Character Count":http://masugadesign.com/the-lab/scripts/md-character-count/ <br />
 EE Extension Info: http://expressionengine.com/docs/development/extensions.html
 
 Also see the "related forum thread at the EE Forums":http://expressionengine.com/forums/viewthread/96988/.
 
 h2. Changelog
 
+*1.0.5 (Mar 01, 2010)*
 
-*1.0.4 (Nov 14, 2008)*
+* Remove .gitignore
+* Update settings for MSM sites
+
+1.0.4 (Nov 14, 2008)
 
 * File cleanup
 
