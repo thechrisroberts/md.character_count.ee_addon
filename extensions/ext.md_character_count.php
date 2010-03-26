@@ -385,7 +385,7 @@ class Md_character_count
 
         foreach ( $count_settings as $key => $val )
           {
-          $count_max    = ereg_replace("[^0-9]", "", $val['count_max']);
+          $count_max    = preg_replace("[^0-9]", "", $val['count_max']);
           $count_type   = $val['count_type'];
           $count_format = str_replace($bad, $good, $val['count_format']);
   
@@ -444,7 +444,7 @@ class Md_character_count
       foreach ($_POST['field_defaults'] as $key => $value)
       {
         unset($_POST['field_defaults_' . $key]);
-        $_POST['field_defaults'][$key]['count_max'] = ereg_replace("[^0-9]", "", $_POST['field_defaults'][$key]['count_max']);
+        $_POST['field_defaults'][$key]['count_max'] = preg_replace("[^0-9]", "", $_POST['field_defaults'][$key]['count_max']);
         $_POST['field_defaults'][$key]['count_format'] = str_replace($bad, $good, $_POST['field_defaults'][$key]['count_format']);
       }
     }
