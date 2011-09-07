@@ -73,9 +73,9 @@ echo form_open('C=addons_extensions'.AMP.'M=save_extension_settings'.AMP.'file=m
     $i = 0; $group_name = null;
 	foreach($channel_fields as $row)
 	{
-		$count_max    = @$ext_settings['field_defaults'][$row->field_id]['count_max'];
-	    $count_type   = @$ext_settings['field_defaults'][$row->field_id]['count_type'];
-	    $count_format = @$ext_settings['field_defaults'][$row->field_id]['count_format'];
+		$count_max     = @$ext_settings['field_defaults'][$row->field_id]['count_max'];
+	    $count_type    = @$ext_settings['field_defaults'][$row->field_id]['count_type'];
+	    $count_format  = @$ext_settings['field_defaults'][$row->field_id]['count_format'];
 		
 		$row_class = ($i++ % 2) ? 'odd' : 'even';
 		if ($group_name != $row->group_name)
@@ -95,7 +95,7 @@ echo form_open('C=addons_extensions'.AMP.'M=save_extension_settings'.AMP.'file=m
 		
 		echo '<tr>'
 		    .'   <td>'.$row->field_label.'</td>'
-		    .'   <td>'.form_input(array('name' => 'field_defaults['.$row->field_id.'][count_max]', 'value' => $count_max, "style" => "width:80px")).'</td>'
+		    .'   <td>'.form_input(array('name' => 'field_defaults['.$row->field_id.'][count_max]', 'value' => $count_max, "style" => "width:80px")).'&nbsp; ('.$lang_max.': '.$row->field_maxl.')</td>'
 		    .'   <td>'.form_dropdown('field_defaults['.$row->field_id.'][count_type]', array('true' => 'Soft', 'false' => 'Hard'), $count_type).'</td>'
 		    .'   <td>'.form_input(array('name' => 'field_defaults['.$row->field_id.'][count_format]', 'value' => $count_format, "style" => "width: 200px")).'</td>'
 		    .'</tr>';

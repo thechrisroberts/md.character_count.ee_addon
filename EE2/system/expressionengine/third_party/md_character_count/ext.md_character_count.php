@@ -171,7 +171,7 @@ class Md_character_count_ext {
 		
 		$settings = $this->_get_settings();
 		
-		$query = $this->EE->db->query("SELECT c.field_id, g.group_name, c.field_label, c.site_id FROM exp_channel_fields c, exp_field_groups g WHERE c.site_id = ".
+		$query = $this->EE->db->query("SELECT c.field_id, g.group_name, c.field_label, c.field_maxl, c.site_id FROM exp_channel_fields c, exp_field_groups g WHERE c.site_id = ".
 	        $this->EE->config->item('site_id')." AND c.group_id = g.group_id AND field_type IN ( 'textarea', 'text', 'markitup' ) ORDER BY g.group_id, c.field_order");
 
 		$channel_fields = $query->result();
@@ -193,7 +193,8 @@ class Md_character_count_ext {
 			'lang_ct_count_type'   => $this->EE->lang->line('coltitle_count_type'),
 			'lang_ct_count_format' => $this->EE->lang->line('coltitle_count_format'),
 			'lang_css_title'       => $this->EE->lang->line('css_title'),
-			'lang_css_info'        => $this->EE->lang->line('css_info')
+			'lang_css_info'        => $this->EE->lang->line('css_info'),
+			'lang_max'             => $this->EE->lang->line('maximum_label')
 		);
 		
 		return $this->EE->load->view('settings_form', $values, TRUE);
@@ -239,7 +240,11 @@ class Md_character_count_ext {
 	      );
 	*/
 		$ext_class = __CLASS__;
-		$query = $this->EE->db->update('exp_extensions', array('settings'=>serialize($this->settings)), "class = '$ext_class'");
+		if ($this->EE->db->update('exp_extensions', array('settings'=>serialize($this->settings)), "class = '$ext_class'"))
+			$this->EE->session->set_flashdata('message_success', $this->EE->lang->line('preferences_updated'));
+		else
+			$this->EE->session->set_flashdata('message_error', 'Update Failed');
+			
 	}
 	
 	// ----------------------------------------------------------------------
@@ -258,8 +263,7 @@ class Md_character_count_ext {
 	{
 		// Setup custom settings in this array.
 		$default_settings = $this->_build_default_settings();
-		
-		
+				
 		// get the list of installed sites
 	    $query = $this->EE->db->get("exp_sites");
 		// if there are sites - we know there will be at least one but do it anyway

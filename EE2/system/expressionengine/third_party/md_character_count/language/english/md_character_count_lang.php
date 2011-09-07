@@ -39,12 +39,15 @@ If nothing is entered, the format will default to: "<strong>%1/{count} character
 'coltitle_count'                   => 'Count',
 'coltitle_count_type'              => 'Count Type',
 'coltitle_count_format'            => 'Count Format',
+'maximum_label'                    => 'Max',
 
 'check_for_updates_title' 	       => 'Check for updates?',
 'check_for_updates_info' 	         => 'MD Character Count can call home (<a href="http://masugadesign.com/">http://masugadesign.com</a>) and check for recent updates. <em>(Requires the <a href="http://leevigraham.com/cms-customisation/expressionengine/lg-addon-updater/">LG Addon Updater</a> Extension)</em>',
 'check_for_updates_error'	         => 'Your php ini must have <code>allow_url_fopen</code> enabled to use this feature.',
 'check_for_updates_label' 	       => 'Would you like this extension to check for updates and display them on your CP homepage?',
 'cache_refresh_label' 		         => 'How many minutes you like the update check cached for?',
+'settings_update_success'			=> 'Settings updated successfully.',
+'settings_update_failure'			=> 'Settings update failed.',
 
 // END
 ''=>''
