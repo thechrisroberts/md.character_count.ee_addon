@@ -4,16 +4,21 @@ Add a customizable character count to CP publish form fields in the ExpressionEn
 
 h2. Info
 
-Developed by Ryan Masuga, http://masugadesign.com
+Developed by Ryan Masuga, Benjamin Kohl :: http://masugadesign.com
 
 Inspired by Andrew Weaver's Character Count extension.
 
-Docs: "MD Character Count":http://masugadesign.com/the-lab/scripts/md-character-count/ <br />
+Docs: "MD Character Count":http://masugadesign.com/software/ <br />
 EE Extension Info: http://expressionengine.com/docs/development/extensions.html
 
 Also see the "related forum thread at the EE Forums":http://expressionengine.com/forums/viewthread/96988/.
 
 h2. Changelog
+
+*2.0 (Sep 7, 2011)*
+
+* Updated for EE2
+* Cleaned up directory structure
 
 *1.0.5 (Mar 01, 2010)*
 
