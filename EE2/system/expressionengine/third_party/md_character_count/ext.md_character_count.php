@@ -296,7 +296,7 @@ class Md_character_count_ext {
 		$hooks = array(
 			'cp_js_end'     => 'cp_js_end',
 			'cp_css_end'    => 'cp_css_end',
-			'cp_menu_array' => 'cp_menu_array'
+			'publish_form_channel_preferences' => 'publish_form_channel_preferences'
 		);
 		
 		foreach ($hooks as $hook => $method)
@@ -348,17 +348,35 @@ class Md_character_count_ext {
 		}
 	}	
 	
+	
+	// ----------------------------------------------------------------------
+	
+	
+	/**
+	 * This function loads the necessary JQuery plugin for the 'content_publish' controller.
+	 */
+	public function publish_form_channel_preferences($prefs)
+	{
+	    if($this->EE->extensions->last_call !== FALSE)
+	    {
+	      $prefs = $this->EE->extensions->last_call;
+	    }
+	
+		$this->EE->cp->load_package_js('jquery.charcounter');
+	
+		return $prefs;
+	}
+	
 	// ----------------------------------------------------------------------
 	
 	/**
 	 * This function uses the 'cp_js_end' hook to add the needed JS to the Control Panel.
 	 */
-	function cp_js_end()
+	function cp_js_end($js)
 	{
 		$this->EE->session->cache['mdesign'][MD_CC_addon_id]['require_scripts'] = TRUE;
 
 	    // Check if we're not the only one using this hook
-		$js = null;
 	    if($this->EE->extensions->last_call !== FALSE)
 	    {
 	      $js = $this->EE->extensions->last_call;
@@ -369,8 +387,6 @@ class Md_character_count_ext {
 		parse_str(parse_url(@$_SERVER['HTTP_REFERER'], PHP_URL_QUERY), $get);
 		$controller = element('C', $get);
 		
-		//mail("ben@masugadesign.com", "The Controller", "The Referring Controller is : $controller"); // TEMP
-		
 	    // if we are on a publish or edit page
 	    if (isset($this->EE->session->cache['mdesign'][MD_CC_addon_id]['require_scripts']) === TRUE && ($controller == 'content_publish' || $controller == 'content_edit'))
 		{
@@ -378,8 +394,6 @@ class Md_character_count_ext {
 	        {
 	        	$ccstuff = '';
 	        	$s = '';
-
-				//$this->EE->cp->load_package_js('jquery.charcounter');
 
 		        $count_settings = $this->settings['field_defaults'];
 		        // // Not really needed here, but it's a redundant act of good measure to keep out the bad characters.
@@ -422,9 +436,8 @@ class Md_character_count_ext {
 					//$ccstuff .= '<script type="text/javascript">'."\n".'$(document).ready( function(){' . "\n\n" . $s . "\n" . '});'."\n".'</script>'."\n\n";
 					$ccstuff .= '$(document).ready( function(){' . "\n\n" . $s . "\n" . '});'."\n\n"; 
 	          	}
-
+				
 	        	// add the script string before the closing head tag
-	        	//$out = str_replace("</head>", $ccstuff . "</head>", $out);
 				$js .= $ccstuff;
 	        }   
 	    }
@@ -435,31 +448,11 @@ class Md_character_count_ext {
 	
 	// ----------------------------------------------------------------------
 	
-	/**
-	 *
-	 */
-	function cp_menu_array()
-	{
-		$menu = null;
-		if($this->EE->extensions->last_call !== FALSE)
-	    {
-	      $menu = $this->EE->extensions->last_call;
-	    }
-	
-		$add_to_head_string = '<script type="text/javascript" src="'.trim($this->settings['charcounter_plugin_path']).'"></script> <!-- Required for '.__CLASS__.' -->'."\n";
-		$this->EE->cp->add_to_head($add_to_head_string);
-		
-		return $menu;
-	}
-	
-	
-	// ----------------------------------------------------------------------
-	
 	
 	/**
 	 * This function uses the 'cp_css_end' hook to append the needed CSS styles to the Control Panel.
 	 */
-	function cp_css_end($out)
+	function cp_css_end($css)
 	{
 		// Check if other extensions have used this hook.
 		

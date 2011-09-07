@@ -23,7 +23,7 @@ echo form_open('C=addons_extensions'.AMP.'M=save_extension_settings'.AMP.'file=m
 		</td> 
 	</tr> 
 </table>
-
+<!--
 <table class="mainTable padTable" border="0" style="margin-top:18px; width:100%" >
 	<thead>
 	<tr>
@@ -33,7 +33,6 @@ echo form_open('C=addons_extensions'.AMP.'M=save_extension_settings'.AMP.'file=m
 	<tr class="odd" >
 		<td colspan="2" ><div class='box' style='border-width:0 0 1px 0; margin:0; padding:10px 5px'><p><?php echo $lang_scripts_info; ?></p></div></td>
 	</tr>
-	<!--
 	<tr class="even" >
 		<td style="width: 40%" ><b><?php echo $lang_jquery_path_lbl; ?></b></td>
 		<td>
@@ -47,7 +46,6 @@ echo form_open('C=addons_extensions'.AMP.'M=save_extension_settings'.AMP.'file=m
 			?>
 		</td>
 	</tr>
-	-->
 	<tr class="odd" >
 		<td style="width: 40%" ><b><?php echo $lang_cc_pi_path_lbl; ?></b></td>
 		<td>
@@ -61,7 +59,7 @@ echo form_open('C=addons_extensions'.AMP.'M=save_extension_settings'.AMP.'file=m
 		</td>
 	</tr>
 </table>
-
+-->
 <table class="mainTable padTable" border="0" style="margin-top:18px; width:100%" >
 	<thead>
 	<tr>
