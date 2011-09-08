@@ -1,34 +1,20 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * ExpressionEngine - by EllisLab
- *
- * @package		ExpressionEngine
- * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2003 - 2011, EllisLab, Inc.
- * @license		http://expressionengine.com/user_guide/license.html
- * @link		http://expressionengine.com
- * @since		Version 2.0
- * @filesource
- */
- 
-// ------------------------------------------------------------------------
-
-/**
  * MD Character Count Extension
  *
- * @package		ExpressionEngine
- * @subpackage	Addons
- * @category	Extension
- * @author		Benjamin Kohl
- * @link		
+ * @package    ExpressionEngine
+ * @subpackage Addons
+ * @category   Extension
+ * @author     Benjamin Kohl
+ * @link       http://devot-ee.com/add-ons/md-character-count
  */
 
 class Md_character_count_ext {
-	
+
 	public $settings 		= array();
-	public $description		= 'Add a customizable character count to CP publish form fields (Textareas, text inputs and MD Markitup fields)';
-	public $docs_url		= 'http://devot-ee.com/add-ons/md-character-count/';
+	public $description		= 'Add a customizable character count to CP publish form fields (Textareas and text inputs)';
+	public $docs_url		= 'http://devot-ee.com/add-ons/md-character-count';
 	public $name			= 'MD Character Count';
 	public $settings_exist	= 'y';
 	public $version			= '2.0';
@@ -50,8 +36,8 @@ class Md_character_count_ext {
 		   $this->EE->session->cache['mdesign'] = array();
 		
 		if ( ! defined('MD_CC_version')){
-		  define("MD_CC_version",         "1.0.5");
-		  define("MD_CC_docs_url",        "http://devot-ee.com/add-ons/md-character-count/");
+		  define("MD_CC_version",         "2.0");
+		  define("MD_CC_docs_url",        "http://devot-ee.com/add-ons/md-character-count");
 		  define("MD_CC_addon_id",        "MD Character Count");
 		  define("MD_CC_extension_class", "Md_character_count_ext");
 		  define("MD_CC_cache_name",      "mdesign_cache");
@@ -72,35 +58,35 @@ class Md_character_count_ext {
      *         Installation settings can be returned is $return_all is set to true
      * @since  Version 2.0.0
      */  
-  	protected function _get_settings($force_refresh = FALSE, $return_all = FALSE)
-  	{
+		protected function _get_settings($force_refresh = FALSE, $return_all = FALSE)
+		{
 		// assume there are no settings
-	    $settings = FALSE;
+		$settings = FALSE;
 		$this->EE->load->helper('string'); // For 'strip_slashes'
 
-	    // Get the settings for the extension
-	    if(isset($this->EE->session->cache['mdesign'][MD_CC_addon_id]['settings']) === FALSE || $force_refresh === TRUE)
-	    {
-	      // check the db for extension settings
-		  $this->EE->db->select('settings');
-	      $query = $this->EE->db->get_where("exp_extensions", array('enabled' => 'y', 'class' => MD_CC_extension_class), 1);
-	      // if there is a row and the row has settings
-	      if ($query->num_rows > 0 && $query->row('settings') != '')
-	      {
-	        // save them to the cache
-	        $this->EE->session->cache['mdesign'][MD_CC_addon_id]['settings'] = unserialize($query->row('settings'));
-	      }
-	    }
+			// Get the settings for the extension
+			if(isset($this->EE->session->cache['mdesign'][MD_CC_addon_id]['settings']) === FALSE || $force_refresh === TRUE)
+			{
+				// check the db for extension settings
+				$this->EE->db->select('settings');
+				$query = $this->EE->db->get_where("exp_extensions", array('enabled' => 'y', 'class' => MD_CC_extension_class), 1);
+				// if there is a row and the row has settings
+				if ($query->num_rows > 0 && $query->row('settings') != '')
+				{
+					// save them to the cache
+					$this->EE->session->cache['mdesign'][MD_CC_addon_id]['settings'] = unserialize($query->row('settings'));
+				}
+			}
 
-	    // check to see if the session has been set
-	    // if it has return the session
-	    // if not return false
-	    if(empty($this->EE->session->cache['mdesign'][MD_CC_addon_id]['settings']) !== TRUE)
-	    {
-	      @$settings = ($return_all === TRUE) ?  $this->EE->session->cache['mdesign'][MD_CC_addon_id]['settings'] : $this->EE->session->cache['mdesign'][MD_CC_addon_id]['settings'][$this->EE->config->item('site_id')];
-	    }
-	    return $settings;
-  	}
+			// check to see if the session has been set
+			// if it has return the session
+			// if not return false
+			if(empty($this->EE->session->cache['mdesign'][MD_CC_addon_id]['settings']) !== TRUE)
+			{
+				@$settings = ($return_all === TRUE) ?	 $this->EE->session->cache['mdesign'][MD_CC_addon_id]['settings'] : $this->EE->session->cache['mdesign'][MD_CC_addon_id]['settings'][$this->EE->config->item('site_id')];
+			}
+			return $settings;
+		}
 
 	// ----------------------------------------------------------------------
 
@@ -114,11 +100,9 @@ class Md_character_count_ext {
 
 	    $default_settings = array(
 	        'enable'                  => 'y',
-			'enable_nsmbm'			  => 'n', // Not being used currently.
+					//'enable_nsmbm'			  => 'n',  Not being used currently.
 	        'field_defaults'          => array(),
-	        'jquery_core_path'        => "http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js",
-	        'charcounter_plugin_path' => $this->EE->config->item('site_url')."/js/jquery.charcounter.js",
-	        'check_for_updates'       => 'y',
+	        //'check_for_updates'       => 'y',
 	        'css' => '
 .charcounter {
   font-size: 11px;
@@ -181,15 +165,7 @@ class Md_character_count_ext {
 			'ext_settings'         => $settings,
 			'version_number'       => $this->version,
 			'channel_fields'       => $channel_fields,
-			'nsmbm_enabled'        => $nsmbm_enabled,
 			'lang_extension_title' => $this->EE->lang->line('extension_title'),
-			'lang_access_rights'   => $this->EE->lang->line('access_rights'),
-			'lang_enable_ext'      => $this->EE->lang->line('enable_extension_for_this_site'),
-			'lang_enable_nsmbm'    => $this->EE->lang->line('lang_enable_nsmbm'),
-			'lang_scripts_title'   => $this->EE->lang->line('scripts_title'),
-			'lang_scripts_info'    => $this->EE->lang->line('scripts_info'),
-			'lang_jquery_path_lbl' => $this->EE->lang->line('jquery_core_path_label'),
-			'lang_cc_pi_path_lbl'  => $this->EE->lang->line('charcounter_plugin_path_label'),
 			'lang_fields_title'    => $this->EE->lang->line('fields_title'),
 			'lang_fields_info'     => $this->EE->lang->line('fields_info'),
 			'lang_ct_count'        => $this->EE->lang->line('coltitle_count'),
