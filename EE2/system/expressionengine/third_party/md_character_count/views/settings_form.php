@@ -1,10 +1,7 @@
 <?php
-//$this->EE-cp->set_variable('cp_page_title', $this->EE->lang->line('extension_settings'));
-
-// TODO : The breadcrumbs
-//echo "<pre>"; print_r($ext_settings); echo "</pre>";
 echo heading($lang_extension_title. " <small>$version_number</small>");
 echo form_open('C=addons_extensions'.AMP.'M=save_extension_settings'.AMP.'file=md_character_count');
+/*
 ?>
 <table class="mainTable padTable" border="0" style="margin-top:18px; width:100%" >
 	<thead>
@@ -21,45 +18,23 @@ echo form_open('C=addons_extensions'.AMP.'M=save_extension_settings'.AMP.'file=m
 			echo form_dropdown('enable', array('y' => 'Yes', 'n' => 'No'), $ext_settings['enable']);
 			?>
 		</td> 
-	</tr> 
-</table>
-<!--
-<table class="mainTable padTable" border="0" style="margin-top:18px; width:100%" >
-	<thead>
-	<tr>
-		<th colspan='2' ><?php echo $lang_scripts_title; ?></th>
 	</tr>
-	</thead>
-	<tr class="odd" >
-		<td colspan="2" ><div class='box' style='border-width:0 0 1px 0; margin:0; padding:10px 5px'><p><?php echo $lang_scripts_info; ?></p></div></td>
-	</tr>
+
+<?php if($nsmbm_enabled): ?>
 	<tr class="even" >
-		<td style="width: 40%" ><b><?php echo $lang_jquery_path_lbl; ?></b></td>
+		<td class="tableCellOne" style="width:30%" >
+			<div class='defaultBold' ><?php echo $lang_enable_nsmbm; ?></div>
+		</td>
 		<td>
 			<?php
-			echo form_input(array(
-					'name' => 'jquery_core_path',
-					'id' => 'jquery_core_path',
-					'value' => $ext_settings['jquery_core_path'],
-					
-				));
+			echo form_dropdown('enable_nsmbm', array('y' => 'Yes', 'n' => 'No'), $ext_settings['enable_nsmbm']);
 			?>
 		</td>
 	</tr>
-	<tr class="odd" >
-		<td style="width: 40%" ><b><?php echo $lang_cc_pi_path_lbl; ?></b></td>
-		<td>
-			<?php
-			echo form_input(array(
-				'name' => 'charcounter_plugin_path',
-				'id' => 'charcounter_plugin_path',
-				'value' =>$ext_settings['charcounter_plugin_path']
-			));
-			?>
-		</td>
-	</tr>
+<?php endif; ?>
+
 </table>
--->
+<?php */ ?>
 <table class="mainTable padTable" border="0" style="margin-top:18px; width:100%" >
 	<thead>
 	<tr>
@@ -115,7 +90,7 @@ echo form_open('C=addons_extensions'.AMP.'M=save_extension_settings'.AMP.'file=m
 	</tr>
 	
 </table>
-<div><?php echo form_submit("Submit", "Update Settings"); ?></div>
+<div><?php echo form_submit(array("id"=>"submit", "name"=>"submit", "class"=>"submit", "value"=>"Update Settings")); ?></div>
 <?php echo form_close()?> <!-- END settings_form -->
 <?php
 /* End of file settings_form.php */

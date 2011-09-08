@@ -1,8 +1,8 @@
 <?php
 /*
 Extension:     ext.md_character_count.php
-Created:       May 18 2008
-Last Modified: Nov 14 2008
+Created:       Aug 30 2011
+Last Modified: Sep  8 2011
 =================================================
 ryan masuga, masugadesign.com
 ryan@masugadesign.com | Copyright 2008
@@ -12,7 +12,7 @@ $lang = array(
 'extension_title'                  => 'MD Character Count',
 'access_rights'                    => 'Extension Access',
 'enable_extension_for_this_site'   => 'Enable MD Character Count for this site?',
-
+'lang_enable_nsmbm'                => 'Enable character counter for NSM Better Meta fields?',
 'scripts_title' 					         => 'Scripts',
 'scripts_info' 				             => 'MD Character Count requires a modified version of <a href="http://www.tomdeater.com/jquery/character_counter/">the jQuery Charcounter Plugin</a> (modified version is bundled with the extension).',
 'jquery_core_path_label'           => 'jQuery Core v1.2.6',

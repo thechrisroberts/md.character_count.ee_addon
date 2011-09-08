@@ -24,13 +24,11 @@
  * @link		
  */
 
-// TODO : the 'addslashes' and 'stripslashes' were causing errors in the unserialization.  Look into an alternative.
-
 class Md_character_count_ext {
 	
 	public $settings 		= array();
 	public $description		= 'Add a customizable character count to CP publish form fields (Textareas, text inputs and MD Markitup fields)';
-	public $docs_url		= '';
+	public $docs_url		= 'http://devot-ee.com/add-ons/md-character-count/';
 	public $name			= 'MD Character Count';
 	public $settings_exist	= 'y';
 	public $version			= '2.0';
@@ -53,7 +51,7 @@ class Md_character_count_ext {
 		
 		if ( ! defined('MD_CC_version')){
 		  define("MD_CC_version",         "1.0.5");
-		  define("MD_CC_docs_url",        "http://masugadesign.com/the-lab/scripts/md-character-count/");
+		  define("MD_CC_docs_url",        "http://devot-ee.com/add-ons/md-character-count/");
 		  define("MD_CC_addon_id",        "MD Character Count");
 		  define("MD_CC_extension_class", "Md_character_count_ext");
 		  define("MD_CC_cache_name",      "mdesign_cache");
@@ -116,6 +114,7 @@ class Md_character_count_ext {
 
 	    $default_settings = array(
 	        'enable'                  => 'y',
+			'enable_nsmbm'			  => 'n', // Not being used currently.
 	        'field_defaults'          => array(),
 	        'jquery_core_path'        => "http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js",
 	        'charcounter_plugin_path' => $this->EE->config->item('site_url')."/js/jquery.charcounter.js",
@@ -176,13 +175,17 @@ class Md_character_count_ext {
 
 		$channel_fields = $query->result();
 		
+		$nsmbm_enabled = $this->check_for_nsm_better_meta();
+		
 		$values = array(
 			'ext_settings'         => $settings,
 			'version_number'       => $this->version,
 			'channel_fields'       => $channel_fields,
+			'nsmbm_enabled'        => $nsmbm_enabled,
 			'lang_extension_title' => $this->EE->lang->line('extension_title'),
 			'lang_access_rights'   => $this->EE->lang->line('access_rights'),
 			'lang_enable_ext'      => $this->EE->lang->line('enable_extension_for_this_site'),
+			'lang_enable_nsmbm'    => $this->EE->lang->line('lang_enable_nsmbm'),
 			'lang_scripts_title'   => $this->EE->lang->line('scripts_title'),
 			'lang_scripts_info'    => $this->EE->lang->line('scripts_info'),
 			'lang_jquery_path_lbl' => $this->EE->lang->line('jquery_core_path_label'),
@@ -233,18 +236,11 @@ class Md_character_count_ext {
 	    $this->settings[$this->EE->config->item('site_id')] = $_POST;
 
 	    // update the settings
-	/*
-	    $query = $this->EE->db->query($sql = 
-	      "UPDATE exp_extensions 
-	       SET settings = '" . serialize($this->settings) . "' WHERE class = '" . MD_CC_extension_class . "'"
-	      );
-	*/
 		$ext_class = __CLASS__;
 		if ($this->EE->db->update('exp_extensions', array('settings'=>serialize($this->settings)), "class = '$ext_class'"))
 			$this->EE->session->set_flashdata('message_success', $this->EE->lang->line('preferences_updated'));
 		else
-			$this->EE->session->set_flashdata('message_error', 'Update Failed');
-			
+			$this->EE->session->set_flashdata('message_error', 'Update Failed');		
 	}
 	
 	// ----------------------------------------------------------------------
@@ -314,7 +310,7 @@ class Md_character_count_ext {
 	          'version'   => $this->version,
 	          'enabled'   => "y"
 	        );
-			$this->EE->db->insert('exp_extensions', $record_data);
+			$qresult = $this->EE->db->insert('exp_extensions', $record_data);
 		}
 		
 	}	
@@ -394,8 +390,9 @@ class Md_character_count_ext {
 	    // if we are on a publish or edit page
 	    if (isset($this->EE->session->cache['mdesign'][MD_CC_addon_id]['require_scripts']) === TRUE && ($controller == 'content_publish' || $controller == 'content_edit'))
 		{
-	    	if($this->settings['enable'] == 'y')
-	        {
+	    	// multiple-site support is commented for now.
+			//if($this->settings['enable'] == 'y')
+	        //{
 	        	$ccstuff = '';
 	        	$s = '';
 
@@ -436,14 +433,13 @@ class Md_character_count_ext {
 
 	        	if ( $s != '' ) 
 	          	{
-	          		// BEN
-					//$ccstuff .= '<script type="text/javascript">'."\n".'$(document).ready( function(){' . "\n\n" . $s . "\n" . '});'."\n".'</script>'."\n\n";
 					$ccstuff .= '$(document).ready( function(){' . "\n\n" . $s . "\n" . '});'."\n\n"; 
 	          	}
 				
 	        	// add the script string before the closing head tag
 				$js .= $ccstuff;
-	        }   
+	        // End of the multi-site enable if block.
+			//}   
 	    }
 	    return $js;
 		
@@ -459,8 +455,6 @@ class Md_character_count_ext {
 	function cp_css_end($css)
 	{
 		// Check if other extensions have used this hook.
-		
-		$css = null;
 		if($this->EE->extensions->last_call !== FALSE)
 	    {
 	      $css = $this->EE->extensions->last_call;
@@ -470,6 +464,22 @@ class Md_character_count_ext {
     	$css .= $out;
 
 		return $css;
+	}
+	
+	
+	// ----------------------------------------------------------------------
+	
+	
+	/**
+	 * This function checks to see if NSM Better Meta is installed.
+	 */
+	protected function check_for_nsm_better_meta()
+	{
+		$query = $this->EE->db->get_where('exp_extensions', array('class' => 'Nsm_better_meta_ext'), 1);
+		if ($query->num_rows() > 0)
+			return true;
+		else
+			return false;
 	}
 
 } // END Md_character_count_ext class
