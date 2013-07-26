@@ -15,6 +15,11 @@ Also see the "related forum thread at the EE Forums":http://expressionengine.com
 
 h2. Changelog
 
+*2.1 (July 26, 2013)
+
+* Removed hard-coded table prefixes
+* Corrected extension installation query
+
 *2.0 (Sep 7, 2011)*
 
 * Updated for EE2
