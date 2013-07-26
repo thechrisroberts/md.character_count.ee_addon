@@ -31,7 +31,7 @@ class Md_character_count_ext {
 	public $docs_url		= 'http://devot-ee.com/add-ons/md-character-count/';
 	public $name			= 'MD Character Count';
 	public $settings_exist	= 'y';
-	public $version			= '2.0';
+	public $version			= '2.1';
 	
 	private $EE;
 	
@@ -83,7 +83,7 @@ class Md_character_count_ext {
 	    {
 	      // check the db for extension settings
 		  $this->EE->db->select('settings');
-	      $query = $this->EE->db->get_where("exp_extensions", array('enabled' => 'y', 'class' => MD_CC_extension_class), 1);
+	      $query = $this->EE->db->get_where("extensions", array('enabled' => 'y', 'class' => MD_CC_extension_class), 1);
 	      // if there is a row and the row has settings
 	      if ($query->num_rows > 0 && $query->row('settings') != '')
 	      {
@@ -135,7 +135,7 @@ class Md_character_count_ext {
 	        );
 
 	    // get all the sites
-	    $query = $this->EE->db->get_where("exp_channels", array("site_id" => $this->EE->config->item('site_id')));
+	    $query = $this->EE->db->get_where("channels", array("site_id" => $this->EE->config->item('site_id')));
 
 	    // if there are channels
 	    if ($query->num_rows() > 0)
@@ -170,7 +170,7 @@ class Md_character_count_ext {
 		
 		$settings = $this->_get_settings();
 		
-		$query = $this->EE->db->query("SELECT c.field_id, g.group_name, c.field_label, c.field_maxl, c.site_id FROM exp_channel_fields c, exp_field_groups g WHERE c.site_id = ".
+		$query = $this->EE->db->query("SELECT c.field_id, g.group_name, c.field_label, c.field_maxl, c.site_id FROM ".$this->EE->db->dbprefix('channel_fields')." c, ".$this->EE->db->dbprefix('field_groups')." g WHERE c.site_id = ".
 	        $this->EE->config->item('site_id')." AND c.group_id = g.group_id AND field_type IN ( 'textarea', 'text', 'markitup' ) ORDER BY g.group_id, c.field_order");
 
 		$channel_fields = $query->result();
@@ -237,7 +237,7 @@ class Md_character_count_ext {
 
 	    // update the settings
 		$ext_class = __CLASS__;
-		if ($this->EE->db->update('exp_extensions', array('settings'=>serialize($this->settings)), "class = '$ext_class'"))
+		if ($this->EE->db->update('extensions', array('settings'=>serialize($this->settings)), "class = '$ext_class'"))
 			$this->EE->session->set_flashdata('message_success', $this->EE->lang->line('preferences_updated'));
 		else
 			$this->EE->session->set_flashdata('message_error', 'Update Failed');		
@@ -248,7 +248,7 @@ class Md_character_count_ext {
 	/**
 	 * Activate Extension
 	 *
-	 * This function enters the extension into the exp_extensions table
+	 * This function enters the extension into the extensions table
 	 *
 	 * @see http://codeigniter.com/user_guide/database/index.html for
 	 * more information on the db class.
@@ -261,7 +261,7 @@ class Md_character_count_ext {
 		$default_settings = $this->_build_default_settings();
 				
 		// get the list of installed sites
-	    $query = $this->EE->db->get("exp_sites");
+	    $query = $this->EE->db->get("sites");
 		// if there are sites - we know there will be at least one but do it anyway
 	    if ($query->num_rows > 0)
 	    {
@@ -274,7 +274,7 @@ class Md_character_count_ext {
 	    } 
 
 	    // get all the sites
-	    $query = $this->EE->db->get("exp_channels");
+	    $query = $this->EE->db->get("channels");
 
 	    // if there are weblogs
 	    if ($query->num_rows > 0)
@@ -301,7 +301,7 @@ class Md_character_count_ext {
 		
 		foreach ($hooks as $hook => $method)
 		{
-			$record_data = array('extension_id'  => '',
+			$record_data = array(
 	          'class'     => __CLASS__,
 	          'method'    => $method,
 	          'hook'      => $hook,
@@ -310,7 +310,7 @@ class Md_character_count_ext {
 	          'version'   => $this->version,
 	          'enabled'   => "y"
 	        );
-			$qresult = $this->EE->db->insert('exp_extensions', $record_data);
+			$qresult = $this->EE->db->insert('extensions', $record_data);
 		}
 		
 	}	
@@ -320,7 +320,7 @@ class Md_character_count_ext {
 	/**
 	 * Disable Extension
 	 *
-	 * This method removes information from the exp_extensions table
+	 * This method removes information from the extensions table
 	 *
 	 * @return void
 	 */
@@ -475,7 +475,7 @@ class Md_character_count_ext {
 	 */
 	protected function check_for_nsm_better_meta()
 	{
-		$query = $this->EE->db->get_where('exp_extensions', array('class' => 'Nsm_better_meta_ext'), 1);
+		$query = $this->EE->db->get_where('extensions', array('class' => 'Nsm_better_meta_ext'), 1);
 		if ($query->num_rows() > 0)
 			return true;
 		else
