@@ -413,7 +413,15 @@ class Md_character_count_ext {
 			    	if ($count_max !== "")
 					{
 			    		// output the jquery for the field(s)
-				      	$s .= '$("#field_id_'.$key.'").charCounter('.$count_max.','."\n";
+				      	$s .= '$("#field_id_'.$key.'")';
+
+                        // Apply a filter to ensure the matched field is not a grid field since these may have the
+                        // same field_id as channel fields, potentially causing false matches. If the id does not
+                        // match the name, the field is inside a grid.
+                        $s .= '.filter("[name=\'field_id_'.$key.'\']")';
+
+                        // Add the charCounter call
+                        $s .= '.charCounter('.$count_max.','."\n";
 
 				        // if user has entered something in count_format, set the format to the user's input
 				        if ($count_format !== "")
